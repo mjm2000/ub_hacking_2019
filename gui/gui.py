@@ -3,6 +3,8 @@ from curses import wrapper
 
 stdscr = curses.initscr
 
+##Global variables
+
 #set up the window
 begin_x = 20; begin_y = 7
 height = 5; width = 40
@@ -18,5 +20,11 @@ albums.refresh(0,0,0,0,2,40)
 song_width = 40
 song_height = 3
 songs = curses.newpad(song_height, song_width)
-albums.refresh(0,0,3,0,5,40)
+songs.refresh(0,0,3,0,5,40)
 
+#lists to store the albums and songs
+abl_list = []
+song_list = []
+
+#now to run functionality
+while True:
