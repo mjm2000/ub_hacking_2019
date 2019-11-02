@@ -1,30 +1,62 @@
 import curses
-from curses import wrapper
+from curses.textpad import Textbox, rectangle
 
-stdscr = curses.initscr
 
-##Global variables
+def main(stdscr):
+    h, w = stdscr.getmaxyx()
+    searching = False
+    search = "Type name here: "
+    maxlen = w - len(search)
+    search_len = 0
 
-#set up the window
-begin_x = 20; begin_y = 7
-height = 5; width = 40
-window = curses.newwin(height, width, begin_y, begin_x)
+    #set up info for albums
+    alb_index = 0
+    alb_height = 40
+    alb = curses.newpad(alb_height, w)
 
-#pad to set up the albums
-alb_width = 40
-alb_height = 2
-albums = curses.newpad(alb_height, alb_width)
-albums.refresh(0,0,0,0,2,40)
+    #set up info for songs
+    song_index = 0
+    song_height = 20
+    songs = curses.newpad(song_height, w)
 
-#pad to set up the songs
-song_width = 40
-song_height = 3
-songs = curses.newpad(song_height, song_width)
-songs.refresh(0,0,3,0,5,40)
+    while True:
+        key = stdscr.getch()
 
-#lists to store the albums and songs
-abl_list = []
-song_list = []
+        stdscr.clear()
 
-#now to run functionality
-while True:
+        if key == curses.KEY_ENTER or key in [10, 13]:
+            if searching == False:
+                searching = True
+            else:
+                searching = False
+                search = "Type name here: "
+                search_len = 0
+
+        elif key == curses.KEY_EXIT:
+            break
+
+        #search function
+        if searching == True:
+            if search_len < maxlen - 1:
+                if (key >= ord('A') and key <= ord('Z')) or (key >= ord('a') and key <= ord('z')):
+                    search += chr(key)
+                    search_len += 1
+                elif key == ord(' '):
+                    search += ' '
+                    search_len += 1
+
+            if key == curses.KEY_BACKSPACE:
+                if search_len > 0:
+                    search = search[:-1]
+                    search_len -= 1
+            
+                
+            
+            stdscr.clear()
+            stdscr.addstr(0,0,search)
+            stdscr.refresh()
+
+        stdscr.refresh
+
+
+curses.wrapper(main)
