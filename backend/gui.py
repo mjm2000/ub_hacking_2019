@@ -40,26 +40,26 @@ def main(stdscr):
             searching = True
 
 
-        elif (key == curses.KEY_ENTER or key [10, 13]):
+        if (key == curses.KEY_ENTER or key [10, 13]):
             if searching and srch != "":
                 alb_list = search.yt_search(srch)
                 searching = False 
                 albums = True
-                
+
             elif albums:
                 v = alb_list[alb_idx_title]
                 ytdl.get_desc(v, alb_idx_title)
                 albums = False
                 searching = True
 
-        elif (key == curses.KEY_UP or key == ord('k'))  and albums:
+        if (key == curses.KEY_UP or key == ord('k'))  and albums:
             if alb_idx > 0:
                 alb_idx -= 1
     
-        elif (key == curses.KEY_DOWN or key == ord('j')) and albums:
+        if (key == curses.KEY_DOWN or key == ord('j')) and albums:
             if alb_idx < len(alb_list) - 1:
                 alb_idx += 1
-        elif key == curses.KEY_EXIT:
+        if key == curses.KEY_EXIT:
             break
 
         #search function
