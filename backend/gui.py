@@ -61,7 +61,7 @@ def main(stdscr):
         if searching:
             if search_len < maxlen - 1:
                 if (key >= ord('A') and key <= ord('Z')) or (key >= ord('a') and key <= ord('z')):
-                    search += chr(key)
+                    srch += chr(key)
                     search_len += 1
                 elif key == ord(' '):
                     srch += ' '
