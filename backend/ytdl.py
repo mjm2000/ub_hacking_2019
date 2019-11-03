@@ -82,13 +82,11 @@ def sort_tags(urls):
 
 
 
-url1 ="https://www.youtube.com/watch?v=ENXvZ9YRjbo"  
-url2 ="https://www.youtube.com/watch?v=gGdGFtwCNBE" 
+#url1 ="https://www.youtube.com/watch?v=ENXvZ9YRjbo"  
+#url2 ="https://www.youtube.com/watch?v=gGdGFtwCNBE" 
 
-url_list= [url1,url2]
 #download_vid(url1,"bevboys.mp3")
 
-info = get_desc(url1,"music")
 
 #for file1 in info:
      
