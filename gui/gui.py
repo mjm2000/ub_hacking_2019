@@ -33,7 +33,7 @@ def main(stdscr):
         stdscr.clear()
 
         #track key navigation conmmands
-        if key == curses.KEY_ENTER or key in [10, 13]:
+        if key == ord('/') or key in [10, 13]:
             if searching == False:
                 searching = True
 
@@ -43,11 +43,11 @@ def main(stdscr):
             elif albums:
                 albums = False
 
-        elif key == curses.KEY_UP and albums:
+        elif (key == curses.KEY_UP or key == ord('k'))  and albums:
             if alb_idx > 0:
                 alb_idx -= 1
     
-        elif key == curses.KEY_DOWN and albums:
+        elif (key == curses.KEY_DOWN or key == ord('j')) and albums:
             if alb_idx < len(alb_list) - 1:
                 alb_idx += 1
         elif key == curses.KEY_EXIT:
