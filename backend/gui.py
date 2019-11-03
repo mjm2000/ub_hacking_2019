@@ -10,6 +10,7 @@ def main(stdscr):
     #used to help what is labeled
     curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
     curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)
+    curses.init_pair(3, curses.COLOR_RED, curses.COLOR_BLACK)
 
     searching = False
     albums = False
@@ -37,6 +38,8 @@ def main(stdscr):
         #track key navigation conmmands
         if searching == False and key == ord('/'):
             searching = True
+            if albums:
+                albums = False
 
 
         if (key == curses.KEY_ENTER or key in [10, 13]):
@@ -46,10 +49,11 @@ def main(stdscr):
                 albums = True
 
             elif albums:
-                v = alb_list[alb_idx_title]
-                ytdl.get_desc(v, alb_idx_title)
-                albums = False
-                searching = True
+                if alb_idx_title != "":
+                    v = alb_list[alb_idx_title]
+                    ytdl.get_desc(v, alb_idx_title)
+                    albums = False
+                    searching = True
 
         if (key == curses.KEY_UP or key == ord('k'))  and albums:
             if alb_idx > 0:
@@ -63,13 +67,20 @@ def main(stdscr):
             searching = False
            # stdscr.erase()
             stdscr.refresh()
-       #     print("hi")
+        if (albums or searching) and key == ord('z'):
+           albums = False
+           searching = False
+           srch = ""
+           stdscr.refresh
 
         if key == curses.KEY_EXIT:
             break
 
         #search function
         if searching:
+            stdscr.addstr("(press ENTER to search)\n", curses.A_BOLD)
+            stdscr.addch('\n')
+
             if search_len < maxlen - 1:
                 if (key >= ord('A') and key <= ord('Z')) or (key >= ord('a') and key <= ord('z')):
                     srch += chr(key)
@@ -84,14 +95,17 @@ def main(stdscr):
                     srch = srch[:-1]
                     search_len -= 1
             bar = header + srch
-            stdscr.addstr(0,0,bar)
+            stdscr.addstr(bar)
+
+            curses.curs_set(1)
         
         #parse through albums
         elif albums:
             stdscr.clear()
-            stdscr.addstr(srch)
-            for i in range(0,w):
-                stdscr.addch(1,i,'*',curses.color_pair(2))
+            stdscr.addstr(srch + '\n')
+            for i in range(0,w-1):
+                stdscr.addch('*',curses.color_pair(2))
+            stdscr.addch('\n')
                 
             line = 2
             for a in alb_list:
@@ -99,17 +113,35 @@ def main(stdscr):
                 if line >= h-2:
                     break
                 elif idx == alb_idx:
-                    stdscr.addstr(line,0,a, curses.color_pair(1))
+                    stdscr.addstr(a + '\n', curses.color_pair(1))
                     alb_idx_title = a
                 else:
-                    stdscr.addstr(line,0,a)
+                    stdscr.addstr(a+'\n')
 
                 line += 1
+            for i in range(0,w-1):
+                stdscr.addch('*',curses.color_pair(3))
+            stdscr.addch('\n')
+            stdscr.addstr("Use UP and DOWN to navigate, ENTER to download, and z to return to downloads\n", curses.A_BOLD)
+            curses.curs_set(0)
         else:
             stdscr.clear()
-            files_info = os.listdir('data/') 
+
+            for i in range(0,w-1):
+                stdscr.addch('*')
+            stdscr.addch('\n')
+            stdscr.addch('\n')
+            
+            files_info = os.listdir('backend/data') 
             for title in files_info:
-                stdscr.addstr(title + '\n' ) 
+                stdscr.addstr(title + '\n') 
+            curses.curs_set(0)
+
+            for i in range(0,w-1):
+                stdscr.addch('*')
+            stdscr.addch('\n')
+            stdscr.addch('\n')
+            stdscr.addstr("press '/' to search", curses.A_BOLD)
 
         # elif appState == "albums"
         # elif appState == "songs"
