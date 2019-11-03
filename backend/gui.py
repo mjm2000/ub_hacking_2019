@@ -45,7 +45,7 @@ def main(stdscr):
                 searching = False 
                 albums = True
 
-        elif (key == curses.KEY_ENTER or key [10, 13]) and albums:
+        elif (key == curses.KEY_ENTER or key in [10, 13]) and albums:
             v = alb_list[alb_idx_title]
             ytdl.get_desc(v, alb_idx_title)
             albums = False
