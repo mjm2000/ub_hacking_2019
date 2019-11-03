@@ -14,8 +14,9 @@ def main(stdscr):
     searching = False
     albums = False
 
-    alb_list = []
+    alb_list = {}
     alb_idx = 0
+    alb_idx_title = ""
 
     # song_list = ["general", "kenobi"]
     # song_idx = 0
@@ -40,11 +41,11 @@ def main(stdscr):
                 searching = True
 
             elif searching and srch != "":
-                alb_list = search.yt_search(srch).items
+                alb_list = search.yt_search(srch)
                 searching = False
                 albums = True
             elif albums:
-                k, v = alb_list[alb_idx]
+                v = alb_list[alb_idx_title]
                 ytdl.get_desc(v)
 
         elif (key == curses.KEY_UP or key == ord('k'))  and albums:
@@ -82,14 +83,15 @@ def main(stdscr):
                 stdscr.addch(1,i,'*',curses.color_pair(2))
                 
             line = 2
-            for a in range(0,len(alb_list)):
-                k,v = alb_list(alb_idx)
-                if a >= h-2:
+            for a in alb_list:
+                idx = line - 2
+                if line >= h-2:
                     break
-                elif a == alb_idx:
-                    stdscr.addstr(line,0,k, curses.color_pair(1))
+                elif idx == alb_idx:
+                    stdscr.addstr(line,0,a, curses.color_pair(1))
+                    alb_idx_title = a
                 else:
-                    stdscr.addstr(line,0,k)
+                    stdscr.addstr(line,0,a)
 
                 line += 1
 
