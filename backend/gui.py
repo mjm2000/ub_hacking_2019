@@ -36,18 +36,19 @@ def main(stdscr):
         stdscr.clear()
 
         #track key navigation conmmands
-        if key == ord('/') or key in [10, 13]:
+        if key == ord('/'):
             if searching == False:
                 searching = True
 
             elif searching and srch != "":
                 alb_list = search.yt_search(srch)
-                searching = False
+                searching = False 
                 albums = True
 
             elif albums:
                 v = alb_list[alb_idx_title]
                 ytdl.get_desc(v, alb_idx_title)
+                searching = True
 
         elif (key == curses.KEY_UP or key == ord('k'))  and albums:
             if alb_idx > 0:
