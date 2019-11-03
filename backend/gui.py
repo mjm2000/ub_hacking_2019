@@ -44,9 +44,10 @@ def main(stdscr):
                 alb_list = search.yt_search(srch)
                 searching = False
                 albums = True
+
             elif albums:
                 v = alb_list[alb_idx_title]
-                ytdl.get_desc(v)
+                ytdl.get_desc(v, alb_idx_title)
 
         elif (key == curses.KEY_UP or key == ord('k'))  and albums:
             if alb_idx > 0:
@@ -64,6 +65,7 @@ def main(stdscr):
                 if (key >= ord('A') and key <= ord('Z')) or (key >= ord('a') and key <= ord('z')):
                     srch += chr(key)
                     search_len += 1
+
                 elif key == ord(' '):
                     srch += ' '
                     search_len += 1
