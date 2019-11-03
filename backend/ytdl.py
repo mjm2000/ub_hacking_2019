@@ -18,28 +18,32 @@ class MyLogger(object):
     def error(self, msg):
         print(msg)
 
-def download_vid(url):
+def download_vid(url,name):
     url_list = [url] 
     #arguments for downloading 
     yt_info ={
     'format': 'bestaudio/best',
+    'outtmpl': 'data/' + name + ".mp3" ,
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
         'preferredcodec': 'mp3',
         'preferredquality': '192',
         
     }]
+
     #downloaded  
     }
-
+    
     with youtube_dl.YoutubeDL(yt_info) as ydl:
         ydl.download(url_list)
+    return "data/" + name + ".mp3"
         
-def get_desc(file):
+def get_desc(url,name):
     meta = {}
     yt_info = {}
+    filePath = download_vid(url, name)  
     with youtube_dl.YoutubeDL(yt_info) as ydl:
-        meta = { file:ydl.extract_info(file,download=False)}
+        meta = { filePath : ydl.extract_info(url,download=False)}
     return meta
 
 
@@ -82,13 +86,13 @@ url1 ="https://www.youtube.com/watch?v=ENXvZ9YRjbo"
 url2 ="https://www.youtube.com/watch?v=gGdGFtwCNBE" 
 
 url_list= [url1,url2]
-#download_vid(url)
+#download_vid(url1,"bevboys.mp3")
 
-info = get_desc(url1)
+info = get_desc(url1,"music")
 
-for file1 in info:
+#for file1 in info:
      
-        print(info[file1]['tags'])
+ #       print(info[file1]['tags'])
    #   print( info[url1][file1] ) 
 
 #print(sort(url_list,'title' ))
