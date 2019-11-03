@@ -40,7 +40,7 @@ def main(stdscr):
             searching = True
 
 
-        if (key == curses.KEY_ENTER or key [10, 13]):
+        if (key == curses.KEY_ENTER or key in [10, 13]):
             if searching and srch != "":
                 alb_list = search.yt_search(srch)
                 searching = False 
