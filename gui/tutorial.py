@@ -2,44 +2,29 @@ import curses
 from curses.textpad import Textbox, rectangle
 
 
-
-search = "Type name here: "
-
-def print_search(stdscrs):
-    char = stdscr.getch()
-    string = search
-    if char != -1:
-        if (char >= ord('A') and char <= ord('Z')) or (char >= ord('a') and char <= ord('z')):
-            string += chr(key)
-    
-    stdscr.clear()
-    stdscr.addstr(0,0,search)
-    stdscr.refresh()
-
-    search = string
-
-
 def main(stdscr):
     h, w = stdscr.getmaxyx()
     searching = False
+    search = "Type name here: "
+    maxlen = w - len(search)
+    search_len = 0
+
+    #set up info for albums
+    alb_index = 0
+    alb_height = 40
+    alb = curses.newpad(alb_height, w)
+
+    #set up info for songs
+    song_index = 0
+    song_height = 20
+    songs = curses.newpad(song_height, w)
 
     while True:
         key = stdscr.getch()
-
-        stdscr.clear()
-
-        if key == curses.KEY_ENTER or key in [10, 13]:
-            if searching == False:
-                searching = True
-            else:
-                searching = False
-
-        elif key == curses.KEY_DOWN:
-            break
-
-        if searching == True:
-            print_search(stdscr)
-
+        stdscr.clear
+        alb.clear
+        alb.addstr(0,0,"hello")
+        alb.refresh
         stdscr.refresh
 
 
