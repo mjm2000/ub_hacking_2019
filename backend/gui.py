@@ -19,15 +19,21 @@ def main(stdscr):
     alb_idx = 0
     alb_idx_title = ""
 
+    files_idx = 0
+
     # song_list = ["general", "kenobi"]
     # song_idx = 0
-
 
     #used to help build the search bar
     header = "Type album name here: "
     srch = ""
     maxlen = w - len(header)
     search_len = 0
+    files_info = {}
+    if os.path.exists("url.txt") and  os.stat("url.txt").st_size != 0:
+        files_info = ytdl.read_file() 
+    else:
+        ytdl.write_file(files_info) 
 
 
     while True:
@@ -51,7 +57,7 @@ def main(stdscr):
             elif albums:
                 if alb_idx_title != "":
                     v = alb_list[alb_idx_title]
-                    ytdl.get_desc(v, alb_idx_title)
+                    files_info.update( ytdl.get_desc(v, alb_idx_title))
                     albums = False
                     searching = True
 
@@ -67,7 +73,7 @@ def main(stdscr):
             searching = False
            # stdscr.erase()
             stdscr.refresh()
-        if (albums or searching) and key == ord('z'):
+        if (albums ) and key == ord('z'):
            albums = False
            searching = False
            srch = ""
@@ -132,9 +138,27 @@ def main(stdscr):
             stdscr.addch('\n')
             stdscr.addch('\n')
             
-            files_info = os.listdir('backend/data') 
+            
+            if (key == curses.KEY_UP or key == ord('k')):
+                if files_idx > 0:
+                    files_idx -= 1
+    
+            if (key == curses.KEY_DOWN or key == ord('j')):
+                if files_idx < len(files_info) - 1:
+                    files_idx += 1
+
+
+            nline = 2 
             for title in files_info:
-                stdscr.addstr(title + '\n') 
+                idx = nline - 2 
+                if nline >= h-2:
+                    break 
+                elif idx == files_idx:
+                    stdscr.addstr(title + '\n', curses.color_pair(1))
+                else:
+                    stdscr.addstr(title+'\n')
+                nline += 1
+                 
             curses.curs_set(0)
 
             for i in range(0,w-1):
@@ -142,7 +166,7 @@ def main(stdscr):
             stdscr.addch('\n')
             stdscr.addch('\n')
             stdscr.addstr("press '/' to search", curses.A_BOLD)
-
+            ytdl.write_file(files_info)
         # elif appState == "albums"
         # elif appState == "songs"
 
