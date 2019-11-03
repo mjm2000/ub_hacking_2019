@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 import youtube_dl 
-from playsound import playsound
+from operator import itemgetter, attrgetter, methodcaller
+#from playsound import playsound
 #from playsound import playsound
 #import html.parser.HTMLParser
 
@@ -42,16 +43,57 @@ def get_desc(file):
     return meta
 
 
-def sort(urls,sort_type ,criteria):
-    for url in urls.values:
-        print(url) 
+def sort(urls,criteria):
+    uul = {}
+    for url_map in urls: 
+        uul.update(get_desc(url_map))  
+        
+    oul = {}
+    
+    for url in uul:
+        element_type = uul[url][criteria]
+        if element_type in oul:
+           element_type = oul[url][criteria]
+           oul[element_type] += url
+        else: 
+           oul[element_type] = [url ] 
+    return oul 
+def sort_tags(urls):
+    #unorder list 
+    uul = {}
+    for url_map in urls:
+        #adds all the meta data of urls into a map
+        uul.update(get_desc(url_map))  
+    oul = {}
+    
+    for url in uul:
+        tags = uul[url]['tags']
+        for tag in tags:
+            if tag in oul:
+                oul[tag] += url
+            else:
+                oul[tag] = url 
 
-url ="https://www.youtube.com/watch?v=ENXvZ9YRjbo"  
-url_list= [url]
-download_vid(url)
+    return oul 
 
-info = get_desc(url)
 
-print (info[url]['title'])
+
+url1 ="https://www.youtube.com/watch?v=ENXvZ9YRjbo"  
+url2 ="https://www.youtube.com/watch?v=gGdGFtwCNBE" 
+
+url_list= [url1,url2]
+#download_vid(url)
+
+info = get_desc(url1)
+
+for file1 in info:
+     
+        print(info[file1]['tags'])
+   #   print( info[url1][file1] ) 
+
+#print(sort(url_list,'title' ))
+
+
+#print(info[url]['title'])
     
 
